@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] Movement movement;
     [SerializeField] BoxCollider2D floorCollider;
     [SerializeField] GameObject terrainParent;
-    BoxCollider2D [] terrainColliders;
+    CompositeCollider2D [] terrainColliders;
     [SerializeField] JetpackHandler jetpackHandler;
     [SerializeField] GameObject UIHandler;
     public GameObject currentWeapon = null;
@@ -18,7 +19,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     void Awake(){
         Cursor.visible = false;
-        terrainColliders = terrainParent.GetComponentsInChildren<BoxCollider2D>();
+        terrainColliders = terrainParent.GetComponentsInChildren<CompositeCollider2D>();
         
     }
 
@@ -75,7 +76,7 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     bool isTouchingFloor(){
-        foreach (BoxCollider2D collider in terrainColliders){
+        foreach (CompositeCollider2D collider in terrainColliders){
             if (floorCollider.IsTouching(collider)){
                 return true;
             }

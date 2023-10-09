@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - Weapon
+  - Enemy
+  - Damaging
+  - Collider
   layers:
   - Default
   - TransparentFX
@@ -13,7 +16,7 @@ TagManager:
   - Terrain
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 
