@@ -14,13 +14,13 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D collider){
-        GameObject projectileObject;
-        projectileObject = collider.gameObject;
-        if (collider.tag == "Collider"){
-            projectileObject = collider.transform.parent.gameObject;
+        GameObject otherObject;
+        otherObject = collider.gameObject;
+        if (otherObject.tag == "Player"){
+            otherObject.GetComponent<PlayerHealth>().damagePlayer();
         }
-        if (projectileObject.tag == "Damaging"){
-            damageEnemy(1, projectileObject);
+        if (otherObject.tag == "Damaging"){
+            damageEnemy(1, otherObject);
         } 
     }
 

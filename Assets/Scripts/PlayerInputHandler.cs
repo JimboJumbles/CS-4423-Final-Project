@@ -18,9 +18,9 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] float maxGrenadePower = 2f;
     [SerializeField] ParticleSystem jetpackParticleSystem;
     GameObject currentWeapon = null;
-    bool jetpackActive = false;
     bool canJump = false;
     float power;
+    string direction = "right";
 
 
     void Awake(){
@@ -50,7 +50,6 @@ public class PlayerInputHandler : MonoBehaviour
         //Use Jetpack
         if (Input.GetKey(KeyCode.LeftShift) && !isTouchingFloor()){
             if (jetpackHandler.fuelRemaining()){
-                jetpackActive = true;
                 movement.useJetpack(vel.x);
                 jetpackHandler.drainFuel();
                 UIHandler.GetComponent<UIHandler>().changeFuelGauge(jetpackHandler.getCurrentFuel(), jetpackHandler.getMaxFuel());
@@ -110,16 +109,27 @@ public class PlayerInputHandler : MonoBehaviour
 
         }
 
-        if (jetpackActive){
+        //Start Jetpack particle system
+        if (Input.GetKeyDown("left shift") && !isTouchingFloor() && jetpackHandler.fuelRemaining()){
             jetpackParticleSystem.Play();
         }
 
         //Stop Jetpack Particle System
-        if (Input.GetKeyUp("left shift")){
-            jetpackActive = false;
+        if (Input.GetKeyUp("left shift") || !jetpackHandler.fuelRemaining()){
             jetpackParticleSystem.Stop();
         }
 
+        //Face Left
+        if (Camera.main.ScreenToWorldPoint(Input.mousePosition).x < transform.position.x && direction == "right"){
+            transform.eulerAngles = new Vector3(0, 180, 0);
+            direction = "left";
+        }
+
+        //Face Right
+        if (Camera.main.ScreenToWorldPoint(Input.mousePosition).x > transform.position.x && direction == "left"){
+            transform.eulerAngles = new Vector3(0, 0, 0);
+            direction = "right";
+        }
     }
 
     bool isTouchingFloor(){
