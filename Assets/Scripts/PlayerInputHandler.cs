@@ -13,8 +13,14 @@ public class PlayerInputHandler : MonoBehaviour
     CompositeCollider2D [] terrainColliders;
     [SerializeField] JetpackHandler jetpackHandler;
     [SerializeField] GameObject UIHandler;
-    public GameObject currentWeapon = null;
+    [SerializeField] GameObject laserGunPrefab;
+    [SerializeField] GameObject grenadePrefab;
+    [SerializeField] float maxGrenadePower = 2f;
+    [SerializeField] ParticleSystem jetpackParticleSystem;
+    GameObject currentWeapon = null;
+    bool jetpackActive = false;
     bool canJump = false;
+    float power;
 
 
     void Awake(){
@@ -24,7 +30,7 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     void Start(){
-        currentWeapon = GameObject.FindGameObjectsWithTag("Weapon")[0];
+        currentWeapon = laserGunPrefab;
     }
 
     void FixedUpdate(){
@@ -44,6 +50,7 @@ public class PlayerInputHandler : MonoBehaviour
         //Use Jetpack
         if (Input.GetKey(KeyCode.LeftShift) && !isTouchingFloor()){
             if (jetpackHandler.fuelRemaining()){
+                jetpackActive = true;
                 movement.useJetpack(vel.x);
                 jetpackHandler.drainFuel();
                 UIHandler.GetComponent<UIHandler>().changeFuelGauge(jetpackHandler.getCurrentFuel(), jetpackHandler.getMaxFuel());
@@ -68,9 +75,49 @@ public class PlayerInputHandler : MonoBehaviour
             }
         }
 
-        //Use Weapon
-        if (Input.GetKeyDown(KeyCode.Mouse0)){
-            currentWeapon.GetComponent<WeaponHandler>().useWeapon(Camera.main.ScreenToWorldPoint(Input.mousePosition), currentWeapon.name);
+        //Select Laser Gun
+        if (Input.GetKeyDown(KeyCode.Alpha1)){
+            currentWeapon = laserGunPrefab;
+            laserGunPrefab.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+        }
+
+        //Select Grenade
+        if (Input.GetKeyDown(KeyCode.Alpha2)){
+            currentWeapon = grenadePrefab;
+            laserGunPrefab.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+        }
+
+        //Use Laser Gun
+        if (currentWeapon.name == "Laser Gun" && Input.GetKeyDown(KeyCode.Mouse0)){
+            currentWeapon.GetComponent<WeaponHandler>().useWeapon(Camera.main.ScreenToWorldPoint(Input.mousePosition), "Laser Gun");
+        }
+
+        //Start charging Grenade
+        if (currentWeapon.name == "Grenade" && Input.GetMouseButtonDown(0)){
+            power = 0f;
+        }
+
+        //Charge Grenade
+        if (currentWeapon.name == "Grenade" && Input.GetKey(KeyCode.Mouse0)){
+            if (power < maxGrenadePower) power += 0.1f;
+            else if (power > maxGrenadePower) power = maxGrenadePower;
+        }
+
+        //Release Grenade
+        if (currentWeapon.name == "Grenade" && Input.GetMouseButtonUp(0)){
+            currentWeapon.GetComponent<WeaponHandler>().useWeapon(Camera.main.ScreenToWorldPoint(Input.mousePosition), "Grenade", power);
+            Debug.Log("Released with power " + power);
+
+        }
+
+        if (jetpackActive){
+            jetpackParticleSystem.Play();
+        }
+
+        //Stop Jetpack Particle System
+        if (Input.GetKeyUp("left shift")){
+            jetpackActive = false;
+            jetpackParticleSystem.Stop();
         }
 
     }
