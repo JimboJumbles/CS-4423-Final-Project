@@ -9,18 +9,25 @@ public class WeaponHandler : MonoBehaviour
 
 
     public void useWeapon(Vector3 targetPosition, string weaponName, float power = 0f){
-        if (weaponName == "Laser Gun"){
-            targetPosition.z = 0;
-            Rigidbody2D newProjectileRB = Instantiate(projectilePrefab, transform.position, Quaternion.LookRotation(transform.forward, (targetPosition - transform.position))).GetComponent<Rigidbody2D>();
-            newProjectileRB.velocity = (targetPosition - transform.position).normalized * projectileSpeed;
-        }
+        Rigidbody2D newProjectileRB;
+        switch (weaponName){
+            case ("Laser Gun"):
+                targetPosition.z = 0;
+                newProjectileRB = Instantiate(projectilePrefab, transform.position, 
+                    Quaternion.LookRotation(transform.forward, (targetPosition - transform.position))).GetComponent<Rigidbody2D>();
+                newProjectileRB.velocity = (targetPosition - transform.position).normalized * projectileSpeed;
+                break;
 
-        else if (weaponName == "Grenade"){
+            case ("Grenade"):
+                targetPosition.z = 0;
+                newProjectileRB = Instantiate(projectilePrefab, transform.position, 
+                    Quaternion.LookRotation(transform.forward, (targetPosition - transform.position))).GetComponent<Rigidbody2D>();
+                newProjectileRB.velocity = (targetPosition - transform.position).normalized * projectileSpeed * power;
+                break;
 
-        }
-
-        else {
-            Debug.Log("No weapon equipped");
+            default:
+                Debug.Log("No weapon equipped");
+                break;
         }
     }
 }

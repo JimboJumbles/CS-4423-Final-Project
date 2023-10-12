@@ -15,7 +15,8 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] GameObject UIHandler;
     [SerializeField] GameObject laserGunPrefab;
     [SerializeField] GameObject grenadePrefab;
-    [SerializeField] float maxGrenadePower = 2f;
+    [SerializeField] float maxGrenadePower = 20f;
+    [SerializeField] float grenadeChargeSpeed = 1f;
     [SerializeField] ParticleSystem jetpackParticleSystem;
     GameObject currentWeapon = null;
     bool canJump = false;
@@ -78,12 +79,14 @@ public class PlayerInputHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1)){
             currentWeapon = laserGunPrefab;
             laserGunPrefab.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+            UIHandler.GetComponent<UIHandler>().changeWeaponUI("Laser Gun");
         }
 
         //Select Grenade
         if (Input.GetKeyDown(KeyCode.Alpha2)){
             currentWeapon = grenadePrefab;
             laserGunPrefab.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+            UIHandler.GetComponent<UIHandler>().changeWeaponUI("Grenade");
         }
 
         //Use Laser Gun
@@ -98,7 +101,7 @@ public class PlayerInputHandler : MonoBehaviour
 
         //Charge Grenade
         if (currentWeapon.name == "Grenade" && Input.GetKey(KeyCode.Mouse0)){
-            if (power < maxGrenadePower) power += 0.1f;
+            if (power < maxGrenadePower) power += 0.1f * grenadeChargeSpeed;
             else if (power > maxGrenadePower) power = maxGrenadePower;
         }
 

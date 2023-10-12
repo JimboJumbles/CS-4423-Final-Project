@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8277684111962594538}
   - component: {fileID: 26620950920661759}
   - component: {fileID: 7975142669915303465}
+  - component: {fileID: 5720871570411201296}
   m_Layer: 0
   m_Name: GrenadeProjectile
-  m_TagString: Untagged
+  m_TagString: ThrownObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,8 +144,24 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &5720871570411201296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4211325720581067184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2712bb10c22af1945b7a3fdb7c603a6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grenadeParticleSystem: {fileID: 6906180443227254543, guid: 70850d691c42ebf40a1e0a142b25660f, type: 3}
+  explosionObject: {fileID: 7546189217262845634, guid: e1409f9b465e9a843a7dcf36770496aa, type: 3}
+  explosionRadius: 2
+  fuseTime: 2

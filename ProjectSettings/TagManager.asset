@@ -7,9 +7,11 @@ TagManager:
   - Ground
   - Weapon
   - Enemy
-  - Damaging
   - Collider
   - DeathPlane
+  - ThrownObject
+  - Laser
+  - Explosion
   layers:
   - Default
   - TransparentFX

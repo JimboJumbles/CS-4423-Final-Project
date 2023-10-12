@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] Text healthText;
     BoxCollider2D deathPlaneCollider;
     bool invincible = false;
+    bool transparent = false;
 
     void Awake(){
         currentHealth = maxHealth;
@@ -24,16 +25,34 @@ public class PlayerHealth : MonoBehaviour
     void Update(){
         //Fall In Pit
         if (playerFloorCollider.IsTouching(deathPlaneCollider)) die();
-        
-        //Touch Enemy
-        if (playerCollider.IsTouchingLayers(7) && !invincible) damagePlayer();
 
     }
 
-    public void damagePlayer(){
-        currentHealth--;
-        updateHealth();
-        if (currentHealth <= 0) die();
+    void FixedUpdate(){
+        //Blink while invincible
+        if (invincible){
+            if (transparent){
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+                transparent = false;
+            }
+            else{
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+                transparent = true;
+            }
+        }
+
+        if (!invincible && transparent){
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+        }
+    }
+
+    public void damagePlayer(int damage){
+        if (!invincible){
+            currentHealth -= damage;
+            updateHealth();
+            if (currentHealth <= 0) die();
+            else turnInvincible();
+        }
     }
 
     void healPlayer(){

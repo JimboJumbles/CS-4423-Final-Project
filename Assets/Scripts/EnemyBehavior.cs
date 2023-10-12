@@ -13,15 +13,19 @@ public class EnemyBehavior : MonoBehaviour
         health = maxHealth;
     }
 
+
     void OnTriggerEnter2D(Collider2D collider){
         GameObject otherObject;
         otherObject = collider.gameObject;
         if (otherObject.tag == "Player"){
-            otherObject.GetComponent<PlayerHealth>().damagePlayer();
+            otherObject.GetComponent<PlayerHealth>().damagePlayer(1);
         }
-        if (otherObject.tag == "Damaging"){
+        else if (otherObject.tag == "Laser"){
             damageEnemy(1, otherObject);
-        } 
+        }
+        else if (otherObject.tag == "Explosion"){
+            damageEnemy(3, otherObject);
+        }
     }
 
     void damageEnemy(int damageInflicted, GameObject projectileObject){
