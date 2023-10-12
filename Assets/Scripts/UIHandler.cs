@@ -27,9 +27,11 @@ public class UIHandler : MonoBehaviour
         switch (weaponName){
             case ("Laser Gun"):
                 weaponFrame.sprite = laserGunSprite;
+                weaponFrame.transform.position = weaponFrame.transform.position + new Vector3(-.025f, 0, 0);
                 break;
             case ("Grenade"):
                 weaponFrame.sprite = grenadeSprite;
+                weaponFrame.transform.position = weaponFrame.transform.position + new Vector3(.025f, 0, 0);
                 break;
             default:
                 break;

@@ -12,6 +12,7 @@ TagManager:
   - ThrownObject
   - Laser
   - Explosion
+  - Coin
   layers:
   - Default
   - TransparentFX

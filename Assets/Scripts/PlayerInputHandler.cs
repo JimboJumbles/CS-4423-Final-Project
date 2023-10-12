@@ -18,16 +18,18 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] float maxGrenadePower = 20f;
     [SerializeField] float grenadeChargeSpeed = 1f;
     [SerializeField] ParticleSystem jetpackParticleSystem;
-    GameObject currentWeapon = null;
+    PlayerHealth playerHealth;
+    public GameObject currentWeapon = null;
+    public bool chargingGrenade = false;
     bool canJump = false;
     float power;
-    string direction = "right";
+    public string direction = "right";
 
 
     void Awake(){
         Cursor.visible = false;
         terrainColliders = terrainParent.GetComponentsInChildren<CompositeCollider2D>();
-        
+        playerHealth = gameObject.GetComponent<PlayerHealth>();
     }
 
     void Start(){
@@ -45,7 +47,6 @@ public class PlayerInputHandler : MonoBehaviour
         //Move Right
         if (Input.GetKey(KeyCode.D)){
             vel.x = 3;
-            
         }
 
         //Use Jetpack
@@ -76,14 +77,14 @@ public class PlayerInputHandler : MonoBehaviour
         }
 
         //Select Laser Gun
-        if (Input.GetKeyDown(KeyCode.Alpha1)){
+        if (Input.GetKeyDown(KeyCode.Alpha1) && currentWeapon == grenadePrefab){
             currentWeapon = laserGunPrefab;
             laserGunPrefab.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
             UIHandler.GetComponent<UIHandler>().changeWeaponUI("Laser Gun");
         }
 
         //Select Grenade
-        if (Input.GetKeyDown(KeyCode.Alpha2)){
+        if (Input.GetKeyDown(KeyCode.Alpha2) && currentWeapon == laserGunPrefab){
             currentWeapon = grenadePrefab;
             laserGunPrefab.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
             UIHandler.GetComponent<UIHandler>().changeWeaponUI("Grenade");
@@ -96,20 +97,27 @@ public class PlayerInputHandler : MonoBehaviour
 
         //Start charging Grenade
         if (currentWeapon.name == "Grenade" && Input.GetMouseButtonDown(0)){
+            chargingGrenade = true;
             power = 0f;
+            grenadePrefab.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
         }
 
         //Charge Grenade
         if (currentWeapon.name == "Grenade" && Input.GetKey(KeyCode.Mouse0)){
-            if (power < maxGrenadePower) power += 0.1f * grenadeChargeSpeed;
-            else if (power > maxGrenadePower) power = maxGrenadePower;
+            if (power < maxGrenadePower){
+                power += 0.1f * grenadeChargeSpeed;
+                changeGrenadeChargeAngle(power);
+            }
+            else if (power > maxGrenadePower){
+                power = maxGrenadePower;
+            }
         }
 
         //Release Grenade
         if (currentWeapon.name == "Grenade" && Input.GetMouseButtonUp(0)){
-            currentWeapon.GetComponent<WeaponHandler>().useWeapon(Camera.main.ScreenToWorldPoint(Input.mousePosition), "Grenade", power);
-            Debug.Log("Released with power " + power);
-
+            currentWeapon.GetComponent<WeaponHandler>().useWeapon(Camera.main.ScreenToWorldPoint(Input.mousePosition), "Grenade", power, direction);
+            grenadePrefab.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+            chargingGrenade = false;
         }
 
         //Start Jetpack particle system
@@ -142,5 +150,15 @@ public class PlayerInputHandler : MonoBehaviour
             }
         }
         return false;
+    }
+
+    void changeGrenadeChargeAngle(float currentPower){
+        if (direction == "left"){
+            grenadePrefab.transform.eulerAngles = new Vector3(0, 180, 45 * currentPower/maxGrenadePower);
+        }
+        else{
+            grenadePrefab.transform.eulerAngles = new Vector3(0, 0, 45 * currentPower/maxGrenadePower);
+        }
+        
     }
 }

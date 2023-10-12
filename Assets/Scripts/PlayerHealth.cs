@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] Text healthText;
     [SerializeField] GameObject UIHandler;
     BoxCollider2D deathPlaneCollider;
+    PlayerInputHandler inputHandler;
     bool invincible = false;
     bool transparent = false;
 
@@ -21,6 +22,7 @@ public class PlayerHealth : MonoBehaviour
         GameObject deathPlane = GameObject.FindWithTag("DeathPlane");
         deathPlaneCollider = deathPlane.GetComponent<BoxCollider2D>();
         UIHandler.GetComponent<UIHandler>().updateHealth(maxHealth);
+        inputHandler = gameObject.GetComponent<PlayerInputHandler>();
     }
 
     void Update(){
@@ -34,16 +36,24 @@ public class PlayerHealth : MonoBehaviour
         if (invincible){
             if (transparent){
                 gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+                if (inputHandler.currentWeapon.name == "Laser Gun" || inputHandler.chargingGrenade){
+                    inputHandler.currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+                }
                 transparent = false;
             }
             else{
                 gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+                if (inputHandler.currentWeapon.name == "Laser Gun" || inputHandler.chargingGrenade){
+                    inputHandler.currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+                }
+                
                 transparent = true;
             }
         }
 
         if (!invincible && transparent){
             gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
+            if (inputHandler.currentWeapon.name == "Grenade") inputHandler.currentWeapon.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
         }
     }
 
@@ -57,6 +67,7 @@ public class PlayerHealth : MonoBehaviour
             else{
                 UIHandler.GetComponent<UIHandler>().updateHealth(currentHealth);
                 turnInvincible();
+                GetComponent<Movement>().knockback();
             }
         }
     }
