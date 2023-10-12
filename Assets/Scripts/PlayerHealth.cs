@@ -11,15 +11,16 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] CompositeCollider2D playerCollider;
     [SerializeField] BoxCollider2D playerFloorCollider;
     [SerializeField] Text healthText;
+    [SerializeField] GameObject UIHandler;
     BoxCollider2D deathPlaneCollider;
     bool invincible = false;
     bool transparent = false;
 
-    void Awake(){
+    void Start(){
         currentHealth = maxHealth;
         GameObject deathPlane = GameObject.FindWithTag("DeathPlane");
         deathPlaneCollider = deathPlane.GetComponent<BoxCollider2D>();
-        updateHealth();
+        UIHandler.GetComponent<UIHandler>().updateHealth(maxHealth);
     }
 
     void Update(){
@@ -49,19 +50,20 @@ public class PlayerHealth : MonoBehaviour
     public void damagePlayer(int damage){
         if (!invincible){
             currentHealth -= damage;
-            updateHealth();
-            if (currentHealth <= 0) die();
-            else turnInvincible();
+            if (currentHealth <= 0){
+                UIHandler.GetComponent<UIHandler>().updateHealth(0);
+                die();
+            }
+            else{
+                UIHandler.GetComponent<UIHandler>().updateHealth(currentHealth);
+                turnInvincible();
+            }
         }
     }
 
     void healPlayer(){
         currentHealth++;
-        updateHealth();
-    }
-
-    void updateHealth(){
-        healthText.text = "Health: " + currentHealth;
+        UIHandler.GetComponent<UIHandler>().updateHealth(currentHealth);
     }
 
     void turnInvincible(){
@@ -70,10 +72,8 @@ public class PlayerHealth : MonoBehaviour
 
         IEnumerator InvincibilityRoutine(){
             invincible = true;
-            Debug.Log("Invincibility Activated");
             yield return new WaitForSeconds(2);
             invincible = false;
-            Debug.Log("Invincibility Deactivated");
             yield return null;
         }
     }

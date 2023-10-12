@@ -9,9 +9,12 @@ public class UIHandler : MonoBehaviour
     [SerializeField] Image weaponFrame;
     [SerializeField] Sprite laserGunSprite;
     [SerializeField] Sprite grenadeSprite;
+    [SerializeField] GameObject healthBar;
+    Image[] hearts;
     
-    void Start(){
+    void Awake(){
         weaponFrame.sprite = laserGunSprite;
+        hearts = healthBar.GetComponentsInChildren<Image>();
     }
 
     public void changeFuelGauge(float currentFuel, float maxFuel){
@@ -30,6 +33,16 @@ public class UIHandler : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    public void updateHealth(int health){
+        int i;
+        for(i = 0; i < health; i++){
+            hearts[i].color = new Color(255, 0, 0, 255);
+        }
+        for (i = health; i < hearts.Length; i++){
+            hearts[i].color = new Color(255, 255, 255, 255);
         }
     }
 }
