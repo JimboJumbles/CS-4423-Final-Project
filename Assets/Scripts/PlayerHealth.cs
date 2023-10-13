@@ -10,7 +10,6 @@ public class PlayerHealth : MonoBehaviour
     int currentHealth;
     [SerializeField] CompositeCollider2D playerCollider;
     [SerializeField] BoxCollider2D playerFloorCollider;
-    [SerializeField] Text healthText;
     [SerializeField] GameObject UIHandler;
     BoxCollider2D deathPlaneCollider;
     PlayerInputHandler inputHandler;
@@ -90,6 +89,6 @@ public class PlayerHealth : MonoBehaviour
     }
 
     void die(){
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("DeathScene");
     }
 }

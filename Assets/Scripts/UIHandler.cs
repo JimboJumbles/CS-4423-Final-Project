@@ -10,6 +10,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] Sprite laserGunSprite;
     [SerializeField] Sprite grenadeSprite;
     [SerializeField] GameObject healthBar;
+    [SerializeField] Text coinCounterUI;
     Image[] hearts;
     
     void Awake(){
@@ -46,5 +47,9 @@ public class UIHandler : MonoBehaviour
         for (i = health; i < hearts.Length; i++){
             hearts[i].color = new Color(255, 255, 255, 255);
         }
+    }
+
+    public void updateCoins(int numCoins){
+        coinCounterUI.text = "COINS: " + numCoins;
     }
 }

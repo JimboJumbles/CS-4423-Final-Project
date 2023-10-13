@@ -152,7 +152,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.68818086, y: 0.041809976}
+  m_Size: {x: 0.47951487, y: 0.041809976}
   m_EdgeRadius: 0
 --- !u!1 &5676024560371935335
 GameObject:
@@ -362,7 +362,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathParticleSystem: {fileID: 650206872083898109, guid: 27769cfa239f6f948b2c9b35f2a94829, type: 3}
   maxHealth: 2
-  health: 0
+  coinPrefab: {fileID: 2906385544127619561, guid: 6d344ce10715ccf4c8e94f668b992aa8, type: 3}
+  enemyFloorCollider: {fileID: 917872467216531667}
+  health: 2
 --- !u!66 &7003570409150296887
 CompositeCollider2D:
   m_ObjectHideFlags: 0
