@@ -13,6 +13,7 @@ TagManager:
   - Laser
   - Explosion
   - Coin
+  - PauseHandler
   layers:
   - Default
   - TransparentFX

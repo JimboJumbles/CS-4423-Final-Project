@@ -9,25 +9,43 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] int maxHealth = 3;
     [SerializeField] GameObject coinPrefab;
     [SerializeField] BoxCollider2D enemyFloorCollider;
+    [SerializeField] GameObject edgeDetector;
+    [SerializeField] Movement movement;
+    EdgeDetection edgeDetection;
     GameObject deathPlane;
     BoxCollider2D deathPlaneCollider;
+    string direction = "left";
     public int health;
 
     void Start(){
         health = maxHealth;
-        GameObject deathPlane = GameObject.FindWithTag("DeathPlane");
+        deathPlane = GameObject.FindWithTag("DeathPlane");
         deathPlaneCollider = deathPlane.GetComponent<BoxCollider2D>();
+        edgeDetection = edgeDetector.GetComponent<EdgeDetection>();
+    }
+
+    void FixedUpdate(){
+        Vector3 vel = Vector3.zero;
+
+        if (direction == "left") vel.x = -3;
+        else vel.x = 3;
+
+        movement.MoveRB(vel);
     }
 
     void Update(){
         if (enemyFloorCollider.IsTouching(deathPlaneCollider)) die();
+
+        if (edgeDetection.isAtEdge()) flip();
+
     }
 
 
     void OnTriggerEnter2D(Collider2D collider){
         GameObject otherObject;
         otherObject = collider.gameObject;
-        if (otherObject.tag == "Player"){
+        if (otherObject.tag == "Ground") flip();
+        else if (otherObject.tag == "Player"){
             otherObject.GetComponent<PlayerHealth>().damagePlayer(1);
         }
         else if (otherObject.tag == "Laser"){
@@ -48,5 +66,17 @@ public class EnemyBehavior : MonoBehaviour
         Instantiate(deathParticleSystem, transform.position, deathParticleSystem.transform.rotation).Play();
         if (killedByWeapon) Instantiate(coinPrefab, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
+    }
+
+    void flip(){
+        if (direction == "left"){
+            transform.eulerAngles = new Vector3(0, 180, 0);
+            direction = "right";
+        }
+        
+        else {
+            transform.eulerAngles = new Vector3(0, 0, 0);
+            direction = "left";
+        }
     }
 }
