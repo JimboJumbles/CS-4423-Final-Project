@@ -119,6 +119,7 @@ Transform:
   - {fileID: 5040565544755913068}
   - {fileID: 3266474866168707284}
   - {fileID: 1736891618649487443}
+  - {fileID: 572261317781838943}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5442604396042848109
@@ -214,7 +215,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 8877184539716660524}
   floorCollider: {fileID: 8153804083858751782}
-  terrainParent: {fileID: 0}
   jetpackHandler: {fileID: 2001292493826160276}
   UIHandler: {fileID: 0}
   laserGunPrefab: {fileID: 635190394681343677}
@@ -222,6 +222,8 @@ MonoBehaviour:
   maxGrenadePower: 15
   grenadeChargeSpeed: 2
   jetpackParticleSystem: {fileID: 7435881109064149871}
+  PauseMenu: {fileID: 0}
+  pauseHandlerObject: {fileID: 0}
   currentWeapon: {fileID: 0}
   chargingGrenade: 0
   direction: right
@@ -344,6 +346,53 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5723748, y: 1.8255596}
   m_EdgeRadius: 0
+--- !u!1 &6482153035458053901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 572261317781838943}
+  - component: {fileID: 418529827294941170}
+  m_Layer: 6
+  m_Name: PlayerSFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &572261317781838943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6482153035458053901}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5025302045626659350}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &418529827294941170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6482153035458053901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8d2aeb246560b408c61899234c862c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCollider: {fileID: 0}
+  playerFloorCollider: {fileID: 0}
+  UIHandler: {fileID: 0}
 --- !u!1 &9003745652137244737
 GameObject:
   m_ObjectHideFlags: 0

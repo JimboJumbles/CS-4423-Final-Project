@@ -51,5 +51,6 @@ public class UIHandler : MonoBehaviour
 
     public void updateCoins(int numCoins){
         coinCounterUI.text = "COINS: " + numCoins;
+        GetComponent<AudioSource>().Play();
     }
 }

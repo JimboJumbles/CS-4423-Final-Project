@@ -11,6 +11,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] BoxCollider2D enemyFloorCollider;
     [SerializeField] GameObject edgeDetector;
     [SerializeField] Movement movement;
+    [SerializeField] GameObject enemyDeathSound;
     EdgeDetection edgeDetection;
     GameObject deathPlane;
     BoxCollider2D deathPlaneCollider;
@@ -60,10 +61,12 @@ public class EnemyBehavior : MonoBehaviour
         health -= damageInflicted;
         Destroy(projectileObject);
         if (health <= 0) die(true);
+        GetComponent<AudioSource>().Play();
     }
 
     void die(bool killedByWeapon = false){
         Instantiate(deathParticleSystem, transform.position, deathParticleSystem.transform.rotation).Play();
+        Instantiate(enemyDeathSound);
         if (killedByWeapon) Instantiate(coinPrefab, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }

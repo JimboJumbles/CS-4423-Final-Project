@@ -6,6 +6,7 @@ public class GoalObject : MonoBehaviour
 {
 
     [SerializeField] GameObject victoryMenu;
+    [SerializeField] GameObject BGMHandler;
 
     BoxCollider2D objectCollider;
     Collider2D groundCollider;
@@ -42,6 +43,8 @@ public class GoalObject : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D player){
+        BGMHandler.GetComponent<AudioSource>().Stop();
+        GetComponent<AudioSource>().Play();
         victoryMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         pauseHandler.pause();
         Cursor.visible = true;

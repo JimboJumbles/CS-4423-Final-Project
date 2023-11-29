@@ -14,12 +14,14 @@ public class PauseControl : MonoBehaviour
     }
 
     public void pause(){
-        Time.timeScale = 0;
         isPaused = true;
+        if (isPaused) Time.timeScale = 0;
+        
     }
 
     public void unpause(){
-        Time.timeScale = 1;
         isPaused = false;
+        Time.timeScale = 1;
+        
     }
 }

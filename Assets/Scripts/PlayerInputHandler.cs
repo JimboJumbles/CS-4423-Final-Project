@@ -16,10 +16,13 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] float maxGrenadePower = 20f;
     [SerializeField] float grenadeChargeSpeed = 1f;
     [SerializeField] ParticleSystem jetpackParticleSystem;
-    
-    PauseControl pauseHandler;
+    [SerializeField] GameObject PauseMenu;
+    [SerializeField] GameObject pauseHandlerObject;
+    [SerializeField] GameObject playerSFXObject;
     CompositeCollider2D groundCollider;
     PlayerHealth playerHealth;
+    PauseControl pauseHandler;
+    PlayerSFXHandler playerSFXHandler;
     public GameObject currentWeapon = null;
     public bool chargingGrenade = false;
     bool canJump = false;
@@ -31,7 +34,8 @@ public class PlayerInputHandler : MonoBehaviour
         Cursor.visible = false;
         groundCollider = GameObject.FindWithTag("Ground").GetComponent<CompositeCollider2D>();
         playerHealth = gameObject.GetComponent<PlayerHealth>();
-        pauseHandler = GameObject.FindWithTag("PauseHandler").GetComponent<PauseControl>();
+        pauseHandler = pauseHandlerObject.GetComponent<PauseControl>();
+        playerSFXHandler = playerSFXObject.GetComponent<PlayerSFXHandler>();
     }
 
     void Start(){
@@ -65,7 +69,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     void Update()
     {
-        if (!pauseHandler.isPaused){
+       if (!pauseHandler.isPaused){
             if (isTouchingFloor() && jetpackHandler.getCurrentFuel() != jetpackHandler.getMaxFuel()) jetpackHandler.refilling = true;
 
 
@@ -73,6 +77,7 @@ public class PlayerInputHandler : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space)){
                 canJump = isTouchingFloor();
                 if(canJump){
+                    playerSFXHandler.playJumpSFX();
                     movement.Jump();
                     jetpackHandler.refilling = false;
                     canJump = false;
@@ -96,6 +101,7 @@ public class PlayerInputHandler : MonoBehaviour
             //Use Laser Gun
             if (currentWeapon.name == "Laser Gun" && Input.GetKeyDown(KeyCode.Mouse0)){
                 currentWeapon.GetComponent<WeaponHandler>().useWeapon(Camera.main.ScreenToWorldPoint(Input.mousePosition), "Laser Gun");
+                playerSFXHandler.playLaserSFX();
             }
 
             //Start charging Grenade
@@ -126,11 +132,13 @@ public class PlayerInputHandler : MonoBehaviour
             //Start Jetpack particle system
             if (Input.GetKeyDown("left shift") && !isTouchingFloor() && jetpackHandler.fuelRemaining()){
                 jetpackParticleSystem.Play();
+                playerSFXHandler.playJetpackSFX();
             }
 
             //Stop Jetpack Particle System
             if (Input.GetKeyUp("left shift") || !jetpackHandler.fuelRemaining()){
                 jetpackParticleSystem.Stop();
+                playerSFXHandler.stopJetpackSFX();
             }
 
             //Face Left
@@ -143,6 +151,17 @@ public class PlayerInputHandler : MonoBehaviour
             if (Camera.main.ScreenToWorldPoint(Input.mousePosition).x > transform.position.x && direction == "left"){
                 transform.eulerAngles = new Vector3(0, 0, 0);
                 direction = "right";
+            }
+
+            //Pause
+            if (Input.GetKeyDown("escape")){
+                PauseMenu.GetComponent<PauseMenu>().pressPauseButton();
+            }
+        }
+        else{
+            //Unpause
+            if (Input.GetKeyDown("escape")){
+                PauseMenu.GetComponent<PauseMenu>().pressPauseButton();
             }
         }
         

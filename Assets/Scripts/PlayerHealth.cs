@@ -89,6 +89,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
     void die(){
+        Cursor.visible = true;
         SceneManager.LoadScene("DeathScene");
     }
 }
