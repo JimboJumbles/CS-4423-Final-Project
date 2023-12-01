@@ -7,7 +7,7 @@ public class Grenade : MonoBehaviour
     [SerializeField] ParticleSystem grenadeParticleSystem;
     [SerializeField] GameObject explosionObject;
     [SerializeField] float explosionRadius = 1f;
-    [SerializeField] int fuseTime = 2;
+    [SerializeField] int fuseTime = 1;
 
     void Start()
     {

@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour
     [SerializeField] float jumpForce = 1f;
     [SerializeField] float jetpackForce = 0.1f;
     public bool knockbackActive = false;
+    [SerializeField] AnimationStateChanger animationStateChanger;
 
     void Awake(){
         rb = GetComponent<Rigidbody2D>();
@@ -19,7 +20,14 @@ public class Movement : MonoBehaviour
         if (!knockbackActive){
             vel.y = rb.velocity.y;
             rb.velocity = vel * speed;
+            if (vel.magnitude == 0) animationStateChanger.changeAnimationState("Player_Idle");
         }
+    }
+
+    public void EnemyMoveRB(Vector3 vel){
+        vel.y = rb.velocity.y;
+        rb.velocity = vel * speed;
+        
     }
 
     public void MoveTransform(Vector3 vel){

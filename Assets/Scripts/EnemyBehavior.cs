@@ -12,6 +12,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] GameObject edgeDetector;
     [SerializeField] Movement movement;
     [SerializeField] GameObject enemyDeathSound;
+    [SerializeField] Animator animator;
+    [SerializeField] string animation;
     EdgeDetection edgeDetection;
     GameObject deathPlane;
     BoxCollider2D deathPlaneCollider;
@@ -23,6 +25,7 @@ public class EnemyBehavior : MonoBehaviour
         deathPlane = GameObject.FindWithTag("DeathPlane");
         deathPlaneCollider = deathPlane.GetComponent<BoxCollider2D>();
         edgeDetection = edgeDetector.GetComponent<EdgeDetection>();
+        animator.Play(animation);
     }
 
     void FixedUpdate(){
@@ -31,7 +34,7 @@ public class EnemyBehavior : MonoBehaviour
         if (direction == "left") vel.x = -3;
         else vel.x = 3;
 
-        movement.MoveRB(vel);
+        movement.EnemyMoveRB(vel);
     }
 
     void Update(){
@@ -45,6 +48,7 @@ public class EnemyBehavior : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider){
         GameObject otherObject;
         otherObject = collider.gameObject;
+        Debug.Log(otherObject.tag);
         if (otherObject.tag == "Ground") flip();
         else if (otherObject.tag == "Player"){
             otherObject.GetComponent<PlayerHealth>().damagePlayer(1);

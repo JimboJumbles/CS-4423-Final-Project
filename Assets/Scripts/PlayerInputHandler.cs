@@ -19,6 +19,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] GameObject PauseMenu;
     [SerializeField] GameObject pauseHandlerObject;
     [SerializeField] GameObject playerSFXObject;
+    [SerializeField] AnimationStateChanger animationStateChanger;
     CompositeCollider2D groundCollider;
     PlayerHealth playerHealth;
     PauseControl pauseHandler;
@@ -48,11 +49,13 @@ public class PlayerInputHandler : MonoBehaviour
         //Move Left
         if (Input.GetKey(KeyCode.A)){
             vel.x = -3;
+            if (isTouchingFloor()) animationStateChanger.changeAnimationState("Player_Walk");
         }
 
         //Move Right
         if (Input.GetKey(KeyCode.D)){
             vel.x = 3;
+            if (isTouchingFloor()) animationStateChanger.changeAnimationState("Player_Walk");
         }
 
         //Use Jetpack
@@ -64,6 +67,17 @@ public class PlayerInputHandler : MonoBehaviour
             }
         }
 
+        //Charge Grenade
+            if (currentWeapon.name == "Grenade" && Input.GetKey(KeyCode.Mouse0)){
+                if (power < maxGrenadePower){
+                    power += 0.1f * grenadeChargeSpeed;
+                    changeGrenadeChargeAngle(power);
+                }
+                else if (power > maxGrenadePower){
+                    power = maxGrenadePower;
+                }
+            }
+
         movement.MoveRB(vel);
     }
 
@@ -72,6 +86,7 @@ public class PlayerInputHandler : MonoBehaviour
        if (!pauseHandler.isPaused){
             if (isTouchingFloor() && jetpackHandler.getCurrentFuel() != jetpackHandler.getMaxFuel()) jetpackHandler.refilling = true;
 
+            if (!isTouchingFloor()) animationStateChanger.changeAnimationState("Player_Jump");
 
             //Jump
             if (Input.GetKeyDown(KeyCode.Space)){
@@ -111,16 +126,16 @@ public class PlayerInputHandler : MonoBehaviour
                 grenadePrefab.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 255);
             }
 
-            //Charge Grenade
-            if (currentWeapon.name == "Grenade" && Input.GetKey(KeyCode.Mouse0)){
-                if (power < maxGrenadePower){
-                    power += 0.1f * grenadeChargeSpeed;
-                    changeGrenadeChargeAngle(power);
-                }
-                else if (power > maxGrenadePower){
-                    power = maxGrenadePower;
-                }
-            }
+            // //Charge Grenade
+            // if (currentWeapon.name == "Grenade" && Input.GetKey(KeyCode.Mouse0)){
+            //     if (power < maxGrenadePower){
+            //         power += 0.1f * grenadeChargeSpeed;
+            //         changeGrenadeChargeAngle(power);
+            //     }
+            //     else if (power > maxGrenadePower){
+            //         power = maxGrenadePower;
+            //     }
+            // }
 
             //Release Grenade
             if (currentWeapon.name == "Grenade" && Input.GetMouseButtonUp(0)){

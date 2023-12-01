@@ -8,9 +8,10 @@ public class PlayerHealth : MonoBehaviour
 {
     int maxHealth = 5;
     int currentHealth;
-    [SerializeField] CompositeCollider2D playerCollider;
     [SerializeField] BoxCollider2D playerFloorCollider;
     [SerializeField] GameObject UIHandler;
+    [SerializeField] AudioSource damageSound;
+    [SerializeField] GameObject deathMenu;
     BoxCollider2D deathPlaneCollider;
     PlayerInputHandler inputHandler;
     bool invincible = false;
@@ -67,6 +68,7 @@ public class PlayerHealth : MonoBehaviour
                 UIHandler.GetComponent<UIHandler>().updateHealth(currentHealth);
                 turnInvincible();
                 GetComponent<Movement>().knockback();
+                damageSound.Play();
             }
         }
     }
@@ -89,7 +91,6 @@ public class PlayerHealth : MonoBehaviour
     }
 
     void die(){
-        Cursor.visible = true;
-        SceneManager.LoadScene("DeathScene");
+        deathMenu.SetActive(true);
     }
 }

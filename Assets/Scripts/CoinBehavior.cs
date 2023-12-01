@@ -10,6 +10,7 @@ public class CoinBehavior : MonoBehaviour
     Collider2D groundCollider;
     CoinCounter coinCounter;
     string direction;
+    float centerPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -18,22 +19,19 @@ public class CoinBehavior : MonoBehaviour
         direction = "up";
         player = GameObject.FindWithTag("Player");
         ground = GameObject.FindWithTag("Ground");
-        coinCounter = player.GetComponent<CoinCounter>();
+        coinCounter = GameObject.FindWithTag("CoinCounter").GetComponent<CoinCounter>();
         groundCollider = ground.GetComponent<CompositeCollider2D>();
+        centerPosition = transform.position.y;
     }
 
     void Update(){
-        switch (direction){
-            case ("up"):
-                if (coinCollider.Distance(groundCollider).distance >= 1) direction = "down";
-                else transform.position += new Vector3(0, 0.005f, 0);
-                break;
-            case ("down"):
-                if (coinCollider.Distance(groundCollider).distance <= 0.5) direction = "up";
-                else transform.position += new Vector3(0, -0.005f, 0);
-                break;
-            default:
-                break;
+        if (direction == "up"){
+                    if (transform.position.y > (centerPosition + 0.3f)) direction = "down";
+                    else transform.position += new Vector3(0, 0.005f, 0);
+        }
+        else if (direction == "down"){
+                    if (transform.position.y < (centerPosition - 0.3f)) direction = "up";
+                    else transform.position += new Vector3(0, -0.005f, 0);
         }
     }
 

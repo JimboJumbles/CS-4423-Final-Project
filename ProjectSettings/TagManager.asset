@@ -14,6 +14,7 @@ TagManager:
   - Explosion
   - Coin
   - PauseHandler
+  - CoinCounter
   layers:
   - Default
   - TransparentFX

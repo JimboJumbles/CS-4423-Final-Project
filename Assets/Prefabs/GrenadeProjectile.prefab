@@ -164,4 +164,4 @@ MonoBehaviour:
   grenadeParticleSystem: {fileID: 6906180443227254543, guid: 70850d691c42ebf40a1e0a142b25660f, type: 3}
   explosionObject: {fileID: 7546189217262845634, guid: e1409f9b465e9a843a7dcf36770496aa, type: 3}
   explosionRadius: 2
-  fuseTime: 2
+  fuseTime: 1

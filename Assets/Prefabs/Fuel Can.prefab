@@ -145,6 +145,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   victoryMenu: {fileID: 0}
+  BGMHandler: {fileID: 0}
+  coinCounter: {fileID: 0}
+  coinsRequired: 5
+  notEnoughCoinsMessage: {fileID: 0}
 --- !u!82 &-5520557824409299838
 AudioSource:
   m_ObjectHideFlags: 0
